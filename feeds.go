@@ -78,7 +78,7 @@ func (p *FeedProcessor) Process(ctx context.Context, feed FeedConfig) error {
 		if err := ctx.Err(); err != nil {
 			return err
 		}
-		msg := FormatMessage(feed.Title, it.Title, it.Link)
+		msg := FormatMessage(feed.Title, it.Title, it.Link, itemTime(it))
 		if err := p.Telegram.SendMessage(ctx, msg); err != nil {
 			slog.Error("send failed", "feed", feed.Title, "item", it.Title, "err", err)
 			continue
@@ -111,7 +111,7 @@ func (p *FeedProcessor) bootstrap(ctx context.Context, feed FeedConfig, items []
 	}
 	p.State.Replace(feed.URL, allIDs, p.MaxSeen)
 
-	msg := FormatMessage(feed.Title, newest.Title, newest.Link)
+	msg := FormatMessage(feed.Title, newest.Title, newest.Link, itemTime(newest))
 	if err := p.Telegram.SendMessage(ctx, msg); err != nil {
 		slog.Error("bootstrap send failed", "feed", feed.Title, "item", newest.Title, "err", err)
 	} else {

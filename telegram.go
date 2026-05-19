@@ -26,10 +26,15 @@ func NewTelegramClient(token, chatID string) *TelegramClient {
 	}
 }
 
-func FormatMessage(feedTitle, articleTitle, articleURL string) string {
+func FormatMessage(feedTitle, articleTitle, articleURL string, published time.Time) string {
+	var datePart string
+	if !published.IsZero() {
+		datePart = fmt.Sprintf(" <i>%s</i>", html.EscapeString(published.UTC().Format("2006-01-02 15:04 MST")))
+	}
 	return fmt.Sprintf(
-		"<b>%s</b>\n<a href=\"%s\">%s</a>",
+		"<b>%s</b>%s\n<a href=\"%s\">%s</a>",
 		html.EscapeString(feedTitle),
+		datePart,
 		html.EscapeString(articleURL),
 		html.EscapeString(articleTitle),
 	)
