@@ -24,10 +24,15 @@ cp config.example.yaml config.yaml
 interval: 15m
 state_file: ./state.json
 max_seen_per_feed: 500
+disable_link_preview: false
 feeds:
   - title: "Hacker News"
     url: "https://news.ycombinator.com/rss"
 ```
+
+Set `disable_link_preview: true` to suppress Telegram's link preview cards.
+
+Messages are formatted as `<feed title> <publish date>` on the first line and the linked article title on the second.
 
 Telegram credentials come from the environment:
 

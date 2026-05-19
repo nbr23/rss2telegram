@@ -1,6 +1,7 @@
 interval: 15m
 state_file: ./state.json
 max_seen_per_feed: 500
+disable_link_preview: false
 
 feeds:
   - title: "Hacker News"

@@ -14,10 +14,11 @@ type FeedConfig struct {
 }
 
 type Config struct {
-	Interval       time.Duration `yaml:"interval"`
-	StateFile      string        `yaml:"state_file"`
-	MaxSeenPerFeed int           `yaml:"max_seen_per_feed"`
-	Feeds          []FeedConfig  `yaml:"feeds"`
+	Interval           time.Duration `yaml:"interval"`
+	StateFile          string        `yaml:"state_file"`
+	MaxSeenPerFeed     int           `yaml:"max_seen_per_feed"`
+	DisableLinkPreview bool          `yaml:"disable_link_preview"`
+	Feeds              []FeedConfig  `yaml:"feeds"`
 }
 
 func LoadConfig(path string) (*Config, error) {
@@ -27,19 +28,21 @@ func LoadConfig(path string) (*Config, error) {
 	}
 
 	var raw struct {
-		Interval       string       `yaml:"interval"`
-		StateFile      string       `yaml:"state_file"`
-		MaxSeenPerFeed int          `yaml:"max_seen_per_feed"`
-		Feeds          []FeedConfig `yaml:"feeds"`
+		Interval           string       `yaml:"interval"`
+		StateFile          string       `yaml:"state_file"`
+		MaxSeenPerFeed     int          `yaml:"max_seen_per_feed"`
+		DisableLinkPreview bool         `yaml:"disable_link_preview"`
+		Feeds              []FeedConfig `yaml:"feeds"`
 	}
 	if err := yaml.Unmarshal(data, &raw); err != nil {
 		return nil, fmt.Errorf("parse config: %w", err)
 	}
 
 	cfg := &Config{
-		StateFile:      raw.StateFile,
-		MaxSeenPerFeed: raw.MaxSeenPerFeed,
-		Feeds:          raw.Feeds,
+		StateFile:          raw.StateFile,
+		MaxSeenPerFeed:     raw.MaxSeenPerFeed,
+		DisableLinkPreview: raw.DisableLinkPreview,
+		Feeds:              raw.Feeds,
 	}
 
 	if raw.Interval == "" {

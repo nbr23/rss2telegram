@@ -36,7 +36,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	tg := NewTelegramClient(token, chatID)
+	tg := NewTelegramClient(token, chatID, cfg.DisableLinkPreview)
 	proc := NewFeedProcessor(tg, state, cfg.MaxSeenPerFeed)
 
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)

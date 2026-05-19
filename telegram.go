@@ -8,21 +8,24 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 	"time"
 )
 
 type TelegramClient struct {
-	Token  string
-	ChatID string
-	HTTP   *http.Client
+	Token              string
+	ChatID             string
+	DisableLinkPreview bool
+	HTTP               *http.Client
 }
 
-func NewTelegramClient(token, chatID string) *TelegramClient {
+func NewTelegramClient(token, chatID string, disableLinkPreview bool) *TelegramClient {
 	return &TelegramClient{
-		Token:  token,
-		ChatID: chatID,
-		HTTP:   &http.Client{Timeout: 30 * time.Second},
+		Token:              token,
+		ChatID:             chatID,
+		DisableLinkPreview: disableLinkPreview,
+		HTTP:               &http.Client{Timeout: 30 * time.Second},
 	}
 }
 
@@ -58,7 +61,7 @@ func (t *TelegramClient) send(ctx context.Context, text string, allowRetry bool)
 	form.Set("chat_id", t.ChatID)
 	form.Set("text", text)
 	form.Set("parse_mode", "HTML")
-	form.Set("disable_web_page_preview", "false")
+	form.Set("disable_web_page_preview", strconv.FormatBool(t.DisableLinkPreview))
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost, endpoint, strings.NewReader(form.Encode()))
 	if err != nil {
