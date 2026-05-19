@@ -1,0 +1,9 @@
+interval: 15m
+state_file: ./state.json
+max_seen_per_feed: 500
+
+feeds:
+  - title: "Hacker News"
+    url: "https://news.ycombinator.com/rss"
+  - title: "Lobsters"
+    url: "https://lobste.rs/rss"

@@ -1,0 +1,7 @@
+/rss2telegram
+/state.json
+/state.json.tmp
+/.state-*.json.tmp
+/config.yaml
+/.env
+/data/
